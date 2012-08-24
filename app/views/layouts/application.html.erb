@@ -8,12 +8,18 @@
 <body>
 
 	<div class="container">
-		<div class="row-fluid">
- 			<div class="span12">
-			<%= yield %>
- 			</div>
-		</div>
+		<%= yield %>
 	</div>
+
+	<script type="text/template" id="row-Template">
+		<td>{{ level }}</td>
+		<td>{{ name }}</td>
+		<td>{{ pages }}</td>
+		<td><form id="add-new" class="input-append">
+			<input type="text" class="input-small add-pgs"/>
+			<input type="submit" class="btn btn-success" value="+"/>
+		</form></td>
+	</script>
 
 	<%= javascript_include_tag "application" %>
 </body>

@@ -1,7 +1,33 @@
 <% provide(:title, "Index page number management") %>
 
+<div class="row-fluid sticky">
+ 	
+	<div class="span5" id="editReference">
+		<h3>Edit Reference</h3>
+		<form action="fuckjavascript">
+		<p>
+			<div class="pull-left">
+				<label>Level:</label>
+				<input type="text" id="level" class="input-mini" />
+			</div><div class="pull-left">
+				<label>Reference name:</label>
+				<input type="text" id="name" />
+			</div>
+		</p>
+		<p class="pull-left">
+			<label>Pages:</label>
+			<input type="text" id="pages" />
+		</p>
+		<p class="pull-left">
+			<input type="submit" class="btn btn-primary update" value="Update">
+			<button class="btn btn-danger remove">Remove</button>
+			<button class="btn add">Add new reference</button>
+		</p>
+		</form>
+	</div>
 	
-	<h2>Adjust page numbers</h2>
+	<div class="span4" id="pageNums">
+		<h3>Adjust page numbers</h3>
 		<p>
 			<label>Input page:</label>
 			<input type="text" id="input_page" />
@@ -11,46 +37,27 @@
 			<input type="text" id="input_pages" />
 		</p>
 		<p>
-			<button id="changeButton">Change</button>
+			<button class="btn" id="changeButton">Change</button>
 		</p>
-	
-	<h2>Edit Reference</h2>
-		<p>
-			<label>Reference name:</label>
-			<input type="text" id="" />
-		</p>
-		<p>
-			<label>Pages:</label>
-			<input type="text" id="" />
-		</p>
+	</div>
+	<div class="shadow"></div>
+</div>
+
+<div class="row-fluid moving">
+	<div class="span12">
 		
+		<h2>Index</h2>
+		<table id="index" class="table table-bordered">
+			<tr class="head">
+				<th style="width:50px">Lvl</th>
+				<th style="width:350px">Reference</th>
+				<th style="width:300px">Pages</th>
+				<th>Add new pages</th>
+			</tr>
+			
+		</table>
+
+	</div>
+</div>
 	
-	<table id="original">
-		<tr class="head">
-			<th style="width:250px">Reference</th>
-			<th>Pages</th>
-		</tr>
-		<tr>
-			<td>Accounting</td>
-			<td>5, 45, 230, 415, 419, 712</td>
-		</tr>
-	</table>
 	
-	<h2>Index</h2>
-	<table id="output" class="table table-striped">
-		<tr class="head">
-			<th>Edit</th>
-			<th style="width:250px">Reference</th>
-			<th>Pages</th>
-			<th>Add new pages</th>
-		</tr>
-		<tr>
-			<td><button class="btn">Edit</button></td>
-			<td>Accounting</td>
-			<td>5, 45, 230, 415, 419, 712</td>
-			<td><input type="text" id="" /></td>
-		</tr>
-	</table>
-
-
-
