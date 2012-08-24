@@ -56,15 +56,10 @@ module RailsFramework
     # Enable the asset pipeline
     config.assets.enabled = true
 
-    #config.assets.paths << "#{Rails.root}/vendor/assets/config"
-    #config.less.paths << "#{Rails.root}/vendor/assets/stylesheets"
-    #config.less.paths << "#{Rails.root}/app/assets/stylesheets"
-    #config.less.compress = true
+    config.assets.paths << "#{Rails.root}/vendor/assets/config"
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-
-    #config.less.paths << File.join(Rails.root)
   end
 end

@@ -17,6 +17,14 @@ var GLOBALVARIABLES;
 		
 	});
 
+// MODELS
+
+	var Topics = Backbone.model.extend({
+
+	});
+
+// VIEWS
+
 	function loadNums(){
 		var	page		= parseInt($page.val()),
 				pages	= parseInt($pages.val());
