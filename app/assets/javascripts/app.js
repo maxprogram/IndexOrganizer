@@ -96,11 +96,9 @@ var indexView;
 		},
 		add: function(){
 			this.collection.add();
-			return false;
 		},
 		addCid: function(ref){
 			this.cid = ref.cid;
-			return false;
 		},
 		editReference: function(row){
 			this.selected = row;
@@ -108,7 +106,6 @@ var indexView;
 			$edName.val(row.get("name"));
 			$edPages.val(row.get("pages"));
 			$edLevel.val(row.get("level"));
-			return false;
 		},
 		update: function(){
 			var pages 	= $edPages.val(),
@@ -125,7 +122,6 @@ var indexView;
 		},
 		remove: function(){
 			this.collection.remove(this.selected);
-			return false;
 		}
 	});
 
@@ -152,7 +148,6 @@ var indexView;
 			$(this.el).addClass("active");
 			
 			indexView.editReference(this.model);
-			return false;
 		},
 		addNew: function(){
 			var pages	= this.model.get("pages"),
