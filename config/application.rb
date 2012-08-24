@@ -9,11 +9,6 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-RailsFramework::Application.configure do
-  config.less.paths << File.join(Rails.root,'vendor','stylesheets')
-  config.less.compress = true
-end
-
 module RailsFramework
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -72,4 +67,9 @@ module RailsFramework
 
     #config.less.paths << File.join(Rails.root)
   end
+end
+
+RailsFramework::Application.configure do
+  config.less.paths << File.join(Rails.root,'vendor','stylesheets')
+  config.less.compress = true
 end
