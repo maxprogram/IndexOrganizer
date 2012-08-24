@@ -47,7 +47,7 @@ var indexView;
 	var Topics = Backbone.Collection.extend({
 		model: Topic,
 		comparator: function(t){
-			return t.get("level");
+			return parseFloat(t.get("level"));
 		},
 		initialize: function(){
 			_.bindAll(this, "render");
@@ -110,8 +110,9 @@ var indexView;
 		update: function(){
 			var pages 	= $edPages.val(),
 				arr		= pages.split(",");
+			for (i in arr) arr[i] = parseFloat(arr[i]);
 			arr.sort(function(a,b){return a-b});
-			pages = arr.join(sep);
+			pages = (isNaN(arr[0])) ? "" : arr.join(sep);
 			
 			this.selected.set({
 				name: $edName.val(),
@@ -155,8 +156,9 @@ var indexView;
 				newsep	= (pages=="") ? "" : ",",
 				conc	= pages + newsep + newPgs,
 				arr		= conc.split(",");
+			for (i in arr) arr[i] = parseFloat(arr[i]);
 			arr.sort(function(a,b){return a-b});
-			pages = arr.join(sep);
+			pages = (isNaN(arr[0])) ? "" : arr.join(sep);
 			
 			this.model.set("pages",pages);
 			return false;
