@@ -68,8 +68,3 @@ module RailsFramework
     #config.less.paths << File.join(Rails.root)
   end
 end
-
-RailsFramework::Application.configure do
-  config.less.paths << File.join(Rails.root,'vendor','stylesheets')
-  config.less.compress = true
-end
