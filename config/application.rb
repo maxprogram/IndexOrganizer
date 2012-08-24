@@ -65,6 +65,6 @@ module RailsFramework
     config.assets.version = '1.0'
 
 
-    config.less.paths << File.join(Rails.root)
+    #config.less.paths << File.join(Rails.root)
   end
 end
