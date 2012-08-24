@@ -46,12 +46,14 @@ var indexView;
 	
 	var Topics = Backbone.Collection.extend({
 		model: Topic,
+		url: "/home/topics",
 		comparator: function(t){
 			return parseFloat(t.get("level"));
 		},
 		initialize: function(){
 			_.bindAll(this, "render");
 			this.on("all", this.render);
+			this.fetch();
 		},
 		render: function(lyr){
 			this.sort({silent:true});
@@ -102,7 +104,6 @@ var indexView;
 		},
 		editReference: function(row){
 			this.selected = row;
-			this.cid = row.cid;
 			$edName.val(row.get("name"));
 			$edPages.val(row.get("pages"));
 			$edLevel.val(row.get("level"));

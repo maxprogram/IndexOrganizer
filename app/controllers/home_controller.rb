@@ -4,4 +4,8 @@ class HomeController < ApplicationController
 
   def about
   end
+  
+  def topics
+    render :json => Topic.all
+  end
 end
