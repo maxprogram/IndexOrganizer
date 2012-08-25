@@ -3,7 +3,7 @@ class AdjustController < ApplicationController
   def create
     page = params[:input_page]
     pages = params[:input_pages]
-    topics = Topic.all
+    topics = Topic.all + Company.all + Person.all
 
     topics.each do |ref|
       arr = []
