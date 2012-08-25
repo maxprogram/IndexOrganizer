@@ -28,17 +28,19 @@
 	
 	<div class="span4" id="pageNums">
 		<h3>Adjust page numbers</h3>
-		<p>
+		<form id="adjust" action="/adjust" method="post">
+		<p class="pull-left">
 			<label>Input page:</label>
-			<input type="text" id="input_page" />
+			<input type="text" name="input_page" />
 		</p>
-		<p>
+		<p class="pull-left">
 			<label># of pages:</label>
-			<input type="text" id="input_pages" />
+			<input type="text" name="input_pages" />
 		</p>
-		<p>
-			<button class="btn" id="changeButton">Change</button>
+		<p class="pull-left">
+			<input class="btn" type="submit" value="Change"/>
 		</p>
+		</form>
 	</div>
 	<div class="shadow"></div>
 </div>

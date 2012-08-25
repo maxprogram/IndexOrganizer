@@ -18,14 +18,13 @@ var indexView;
 		$edName		= $("#name",$edit),
 		$edPages	= $("#pages",$edit),
 		$edLevel	= $("#level",$edit),
-		$rowTemp	= $("#row-Template"),
-		changed		= [];
+		$rowTemp	= $("#row-Template");
 	
 	// Load functions
 	$(function(){
 		
 		indexView = new IndexView();
-		$change.click(function(){indexView.save()});
+		$change.click(function(){});
 		
 		$(".moving").css("marginTop",$(".sticky").height());
 		
