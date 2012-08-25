@@ -17,5 +17,11 @@ class TopicsController < ApplicationController
     })
     render :json => topic
   end
+  
+  def destroy
+    topic = Topic.find(params[:id])
+    topic.destroy
+    render :json => topic
+  end
 
 end
