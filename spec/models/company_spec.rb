@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: topics
+# Table name: companies
 #
 #  id         :integer          not null, primary key
 #  level      :decimal(, )
@@ -10,9 +10,8 @@
 #  updated_at :datetime         not null
 #
 
-class Topic < ActiveRecord::Base
-  attr_accessible :level, :name, :pages
-  
-  validates :name,  presence: true
-  validates :level, presence: true
+require 'spec_helper'
+
+describe Company do
+  pending "add some examples to (or delete) #{__FILE__}"
 end

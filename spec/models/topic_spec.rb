@@ -3,7 +3,7 @@
 # Table name: topics
 #
 #  id         :integer          not null, primary key
-#  level      :integer
+#  level      :decimal(, )
 #  name       :string(255)
 #  pages      :string(255)
 #  created_at :datetime         not null

@@ -16,7 +16,6 @@ var app = app || {};
 (function($){
 
 	var Topic = Backbone.Model.extend({
-		urlRoot: "/topics",
 		defaults: {
 			level: 0,
 			name: "Reference Name",
@@ -24,9 +23,9 @@ var app = app || {};
 		}
 	});
 	
-	app.Topics = Backbone.Collection.extend({
+	app.Collect = Backbone.Collection.extend({
 		model: Topic,
-		url: "/topics",
+		//url: app.tableUrl,
 		comparator: function(t){
 			return parseFloat(t.get("level"));
 		},
@@ -39,5 +38,12 @@ var app = app || {};
 		}
 	});
 	
+	app.Topics = app.Collect.extend({url: "/topics"});
+	app.People = app.Collect.extend({url: "/people"});
+	app.Companies = app.Collect.extend({url: "/companies"});
+
+	app.topics = new app.Topics();
+	app.people = new app.People();
+	app.companies = new app.Companies();
 	
 })(jQuery);

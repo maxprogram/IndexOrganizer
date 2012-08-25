@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: topics
+# Table name: people
 #
 #  id         :integer          not null, primary key
 #  level      :decimal(, )
@@ -10,7 +10,7 @@
 #  updated_at :datetime         not null
 #
 
-class Topic < ActiveRecord::Base
+class Person < ActiveRecord::Base
   attr_accessible :level, :name, :pages
   
   validates :name,  presence: true

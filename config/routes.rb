@@ -4,6 +4,8 @@ RailsFramework::Application.routes.draw do
 
   match '/about', to: 'home#about'
   resources :topics
+  resources :people
+  resources :companies
   resources :adjust
 
   #match 'home(/:action(/:id))(.:format)' => 'home'

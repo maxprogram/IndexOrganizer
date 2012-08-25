@@ -9,22 +9,31 @@ var app = app || {};
 (function($){
 	
 	var	sep			= ", ",
-		$change		= $("#changeButton"),
+		$nav		= $("#listNav"),
 		$edit		= $("#editReference"),
 		$index		= $("#index"),
-		$page		= $("#input_page"),
-		$pages		= $("#input_pages"),
-		$edName		= $("#name",$edit),
-		$edPages	= $("#pages",$edit),
-		$edLevel	= $("#level",$edit),
 		$rowTemp	= $("#row-Template");
 	
 	// Load functions
 	$(function(){
 		
+		app.entries = app.topics;
 		app.indexView = new IndexView();
 		
 		$(".moving").css("marginTop",$(".sticky").height());
+		
+		$("li a",$nav).click(function(){
+			$(this).parent()
+				.addClass("active")
+				.siblings()
+				.removeClass("active");
+			var newCollect = $(this).attr("href");
+
+			app.entries = app[newCollect];
+			app.entries.fetch();
+			app.indexView.initialize();
+			return false;
+		});
 		
 	});
 
@@ -38,16 +47,19 @@ var app = app || {};
 		},
 		initialize: function(){
 			_.bindAll(this,"add","edit","update","remove");
+			this.$edName 	= $("#name",this.el),
+			this.$edPages	= $("#pages",this.el),
+			this.$edLevel	= $("#level",this.el),
 			
-			this.entries = new app.Topics();
-			this.entries.on("add", this.addRecent, this);
-			this.entries.on("add change reset", this.render, this);
+			app.entries.off();
+			app.entries.on("add", this.addRecent, this);
+			app.entries.on("add change reset", this.render, this);
 		},
 		render: function(){
 			var self = this, selected = false;
 			$(".index-row",$index).remove();
 			
-			_(this.entries.models).each(function(ref,i){
+			_(app.entries.models).each(function(ref,i){
 				var rowView = new RowView({model: ref});
 				$index.append(rowView.render().el);
 				if (self.recent == ref && !selected){
@@ -61,7 +73,7 @@ var app = app || {};
 			});	
 		},
 		add: function(){
-			this.entries.create();
+			app.entries.create();
 		},
 		remove: function(){
 			this.selected.destroy();
@@ -71,21 +83,22 @@ var app = app || {};
 		},
 		edit: function(ref){
 			this.selected = ref;
-			$edName.val(ref.get("name"));
-			$edPages.val(ref.get("pages"));
-			$edLevel.val(ref.get("level"));
+			this.$edName.val(ref.get("name"));
+			this.$edPages.val(ref.get("pages"));
+			this.$edLevel.val(ref.get("level"));
 		},
 		update: function(){
-			var pages 	= $edPages.val(),
+			var self	= this,
+				pages 	= this.$edPages.val(),
 				arr		= pages.split(",");
 			for (i in arr) arr[i] = parseFloat(arr[i]);
 			arr.sort(function(a,b){return a-b});
 			pages = (isNaN(arr[0])) ? "" : arr.join(sep);
 			
 			this.selected.save({
-				name: $edName.val(),
+				name: self.$edName.val(),
 				pages: pages,
-				level: $edLevel.val()
+				level: self.$edLevel.val()
 			});
 			return false;
 		}
