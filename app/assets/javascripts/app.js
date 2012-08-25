@@ -18,35 +18,51 @@ var indexView;
 		$edName		= $("#name",$edit),
 		$edPages	= $("#pages",$edit),
 		$edLevel	= $("#level",$edit),
-		$rowTemp	= $("#row-Template");
+		$rowTemp	= $("#row-Template"),
+		changed		= [];
 	
 	// Load functions
 	$(function(){
 		
 		indexView = new IndexView();
-		$change.click(function(){indexView.collection.sort()});
+		$change.click(function(){indexView.save()});
 		
 		$(".moving").css("marginTop",$(".sticky").height());
 		
 	});
+	
+	Backbone.old_sync = Backbone.sync
+	Backbone.sync = function(method, model, options) {
+	    var new_options =  _.extend({
+	        beforeSend: function(xhr) {
+	            var token = $('meta[name="csrf-token"]').attr('content');
+	            if (token) xhr.setRequestHeader('X-CSRF-Token', token);
+	        }
+	    }, options)
+	    Backbone.old_sync(method, model, new_options);
+	};
 
 // MODELS
 
 	var Topic = Backbone.Model.extend({
+		urlRoot: "/topics",
 		defaults: {
 			level: 0,
 			name: "Reference Name",
-			pages: "",
-			category: "Topic"
+			pages: ""
 		},
 		initialize: function(){
-			
+			_.bindAll(this, "render");
+			this.on("add", this.render);
+		},
+		render: function(){
+			this.save();
 		}
 	});
 	
 	var Topics = Backbone.Collection.extend({
 		model: Topic,
-		url: "/home/topics",
+		url: "/topics",
 		comparator: function(t){
 			return parseFloat(t.get("level"));
 		},
@@ -55,7 +71,7 @@ var indexView;
 			this.on("all", this.render);
 			this.fetch();
 		},
-		render: function(lyr){
+		render: function(eventName){
 			this.sort({silent:true});
 		}
 	});
@@ -68,7 +84,7 @@ var indexView;
 		events: {
 			"click .add"	: "add",
 			"click .update"	: "update",
-			"submit form"	: "update",
+			"submit #edit"	: "update",
 			"click .remove"	: "remove"
 		},
 		initialize: function(){
@@ -76,7 +92,7 @@ var indexView;
 			
 			this.collection = new Topics();
 			this.collection.on("add", this.addCid);
-			this.collection.on("add remove change reset", this.render);
+			this.collection.on("add change reset", this.render);
 		},
 		render: function(){
 			var self = this, selected = false;
@@ -93,8 +109,7 @@ var indexView;
 					rowView.selectRow();
 					selected = true;
 				}
-			});
-			
+			});	
 		},
 		add: function(){
 			this.collection.add();
@@ -115,7 +130,7 @@ var indexView;
 			arr.sort(function(a,b){return a-b});
 			pages = (isNaN(arr[0])) ? "" : arr.join(sep);
 			
-			this.selected.set({
+			this.selected.save({
 				name: $edName.val(),
 				pages: pages,
 				level: $edLevel.val()
@@ -123,7 +138,7 @@ var indexView;
 			return false;
 		},
 		remove: function(){
-			this.collection.remove(this.selected);
+			this.selected.destroy();
 		}
 	});
 
@@ -161,7 +176,7 @@ var indexView;
 			arr.sort(function(a,b){return a-b});
 			pages = (isNaN(arr[0])) ? "" : arr.join(sep);
 			
-			this.model.set("pages",pages);
+			this.model.save("pages",pages);
 			return false;
 		},
 		remove: function(){

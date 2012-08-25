@@ -3,6 +3,9 @@ RailsFramework::Application.routes.draw do
   root to: 'home#index'
 
   match '/about', to: 'home#about'
+  resources :topics
+  #match '/home/topics', to: 'home#topics'
+  #match 'home(/:action(/:id))(.:format)' => 'home'
 
   #get "home/index"
 
