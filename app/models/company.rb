@@ -13,6 +13,8 @@
 class Company < ActiveRecord::Base
   attr_accessible :level, :name, :pages
   
+  belongs_to :letter
+  
   validates :name,  presence: true
   validates :level, presence: true
 end

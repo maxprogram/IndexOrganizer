@@ -41,9 +41,11 @@ var app = app || {};
 	app.Topics = app.Collect.extend({url: "/topics"});
 	app.People = app.Collect.extend({url: "/people"});
 	app.Companies = app.Collect.extend({url: "/companies"});
+	app.Letters = app.Collect.extend({url: "/letters"});
 
 	app.topics = new app.Topics();
 	app.people = new app.People();
 	app.companies = new app.Companies();
+	app.letters = new app.Letters();
 	
 })(jQuery);

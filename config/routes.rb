@@ -6,6 +6,7 @@ RailsFramework::Application.routes.draw do
   resources :topics
   resources :people
   resources :companies
+  resources :letters
   resources :adjust
 
   #match 'home(/:action(/:id))(.:format)' => 'home'
