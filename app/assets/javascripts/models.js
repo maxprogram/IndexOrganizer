@@ -15,17 +15,16 @@ var app = app || {};
 
 (function($){
 
-	var Topic = Backbone.Model.extend({
+	var Reference = Backbone.Model.extend({
 		defaults: {
 			level: 0,
-			name: "Reference Name",
+			name: "Name",
 			pages: ""
 		}
 	});
 	
-	app.Collect = Backbone.Collection.extend({
-		model: Topic,
-		//url: app.tableUrl,
+	Collection = Backbone.Collection.extend({
+		model: Reference,
 		comparator: function(t){
 			return parseFloat(t.get("level"));
 		},
@@ -44,14 +43,15 @@ var app = app || {};
 		}
 	});
 	
-	app.Topics = app.Collect.extend({url: "/topics"});
-	app.People = app.Collect.extend({url: "/people"});
-	app.Companies = app.Collect.extend({url: "/companies"});
-	app.Letters = app.Collect.extend({url: "/letters"});
+	// Extends collection to all rails models
+	Topics = Collection.extend({url: "/topics"});
+	People = Collection.extend({url: "/people"});
+	Companies = Collection.extend({url: "/companies"});
+	Letters = Collection.extend({url: "/letters"});
 
-	app.topics = new app.Topics();
-	app.people = new app.People();
-	app.companies = new app.Companies();
-	app.letters = new app.Letters();
+	app.topics = new Topics();
+	app.people = new People();
+	app.companies = new Companies();
+	app.letters = new Letters();
 	
 })(jQuery);

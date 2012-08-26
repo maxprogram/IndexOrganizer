@@ -18,15 +18,19 @@ var app = app || {};
 	// Load functions
 	$(function(){
 		
+		// App "start" variables
 		app.entries = app.topics;
 		app.table = "topics";
 		app.pagesOn = true;
+		
+		// Create view instances
 		app.indexView = new IndexView();
 		app.adjustPage = new AdjustPage();
-		$("#test").click(function(){console.log(convertToLetters("19, 20, 21, 24, 36, 39, 41, 67, 68, 74, 75"))});
 		
+		// Set fixed heading spacing
 		$(".moving").css("marginTop",$(".sticky").height());
 		
+		// Table tab toggling
 		$("li a",$nav).click(function(){
 			$(this).parent()
 				.addClass("active")
@@ -34,7 +38,7 @@ var app = app || {};
 				.removeClass("active");
 			var newCollect = $(this).attr("href");
 			app.table = newCollect;
-
+			// Set/fetch new models, re-initialize view
 			app.entries = app[newCollect];
 			app.entries.fetch();
 			app.indexView.initialize();
@@ -111,25 +115,15 @@ var app = app || {};
 	var AdjustPage = Backbone.View.extend({
 		el: $adjust,
 		events: {
-			"click #convertP"	: "convertPages",
-			"click #convertL"	: "convertLetters"
+			"click #convertL"	: "convertL",
+			"click #convertP"	: "convertP"
 		},
-		convertPages: function(){
-			app.pagesOn = true;
-			_(app.topics.models).each(function(ref){
-				var pages = ref.get("pages");
-				if (pages!="") ref.save("pages",app.convertToPages(pages));
-			});
-			_(app.companies.models).each(function(ref){
-				var pages = ref.get("pages");
-				if (pages!="") ref.save("pages",app.convertToPages(pages));
-			});
-			_(app.people.models).each(function(ref){
-				var pages = ref.get("pages");
-				if (pages!="") ref.save("pages",app.convertToPages(pages));
+		initialize: function(){
+			$('[data-toggle="buttons-radio"] .btn').click(function(){
+				$(this).addClass("active").siblings().removeClass("active");
 			});
 		},
-		convertLetters: function(){
+		convertL: function(){
 			app.pagesOn = false;
 			_(app.topics.models).each(function(ref){
 				var pages = ref.get("pages");
@@ -142,6 +136,21 @@ var app = app || {};
 			_(app.people.models).each(function(ref){
 				var pages = ref.get("pages");
 				if (pages!="") ref.save("pages",app.convertToLetters(pages));
+			});
+		},
+		convertP: function(){
+			app.pagesOn = true;
+			_(app.topics.models).each(function(ref){
+				var pages = ref.get("pages");
+				if (pages!="") ref.save("pages",app.convertToPages(pages));
+			});
+			_(app.companies.models).each(function(ref){
+				var pages = ref.get("pages");
+				if (pages!="") ref.save("pages",app.convertToPages(pages));
+			});
+			_(app.people.models).each(function(ref){
+				var pages = ref.get("pages");
+				if (pages!="") ref.save("pages",app.convertToPages(pages));
 			});
 		}
 	});

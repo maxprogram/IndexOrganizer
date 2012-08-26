@@ -18,11 +18,11 @@
 			<label>Pages:</label>
 			<input type="text" id="pages" class="input-xlarge" />
 		</p>
-		<p class="pull-left">
+		<div class="bottom-buttons">
 			<input type="submit" class="btn btn-primary update" value="Update"/>
 			<button class="btn btn-danger remove" type="button">Remove</button>
 			<button class="btn add" type="button">Add new reference</button>
-		</p>
+		</div>
 		</form>
 	</div>
 	
@@ -37,11 +37,13 @@
 			<label># of pages:</label>
 			<input type="text" name="input_pages" />
 		</p>
-		<p class="pull-left">
+		<div class="bottom-buttons">
 			<input class="btn btn-primary" type="submit" value="Change"/>
-			<input class="btn btn-warning" type="button" value="Convert to Pages" id="convertP"/>
-			<input class="btn btn-warning" type="button" value="Convert to Letters" id="convertL"/>
-		</p>
+			<div class="btn-group" data-toggle="buttons-radio">
+				<button class="btn btn-warning active" type="button" id="convertP">Pages</button>
+				<button class="btn btn-warning" type="button" id="convertL">Letters</button>
+			</div>
+		</div>
 		</form>
 	</div>
 	<div class="shadow"></div>
