@@ -35,6 +35,12 @@ var app = app || {};
 		},
 		render: function(eventName){
 			this.sort({silent:true});
+		},
+		getPage: function(name){
+			var model = this.find(function(ref){
+				return parseFloat(ref.get("name")) == parseFloat(name);
+			});
+			return parseFloat(model.get("pages"));
 		}
 	});
 	

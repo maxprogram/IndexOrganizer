@@ -11,6 +11,7 @@ var app = app || {};
 	var	sep			= ", ",
 		$nav		= $("#listNav"),
 		$edit		= $("#editReference"),
+		$adjust		= $("#pageNums"),
 		$index		= $("#index"),
 		$rowTemp	= $("#row-Template");
 	
@@ -18,7 +19,11 @@ var app = app || {};
 	$(function(){
 		
 		app.entries = app.topics;
+		app.table = "topics";
+		app.pagesOn = false;
 		app.indexView = new IndexView();
+		app.adjustPage = new AdjustPage();
+		$("#test").click(function(){console.log(convertToLetters("19, 20, 21, 24, 36, 39, 41, 67, 68, 74, 75"))});
 		
 		$(".moving").css("marginTop",$(".sticky").height());
 		
@@ -28,6 +33,7 @@ var app = app || {};
 				.siblings()
 				.removeClass("active");
 			var newCollect = $(this).attr("href");
+			app.table = newCollect;
 
 			app.entries = app[newCollect];
 			app.entries.fetch();
@@ -90,17 +96,53 @@ var app = app || {};
 		update: function(){
 			var self	= this,
 				pages 	= this.$edPages.val(),
-				arr		= pages.split(",");
-			for (i in arr) arr[i] = parseFloat(arr[i]);
-			arr.sort(function(a,b){return a-b});
-			pages = (isNaN(arr[0])) ? "" : arr.join(sep);
+				pgs		= app.formatPages(pages,"");
 			
 			this.selected.save({
 				name: self.$edName.val(),
-				pages: pages,
+				pages: pgs,
 				level: self.$edLevel.val()
 			});
 			return false;
+		}
+	});
+
+	// Adjust page view
+	var AdjustPage = Backbone.View.extend({
+		el: $adjust,
+		events: {
+			"click #convertP"	: "convertPages",
+			"click #convertL"	: "convertLetters"
+		},
+		convertPages: function(){
+			app.pagesOn = true;
+			_(app.topics.models).each(function(ref){
+				var pages = ref.get("pages");
+				if (pages!="") ref.save("pages",app.convertToPages(pages));
+			});
+			_(app.companies.models).each(function(ref){
+				var pages = ref.get("pages");
+				if (pages!="") ref.save("pages",app.convertToPages(pages));
+			});
+			_(app.people.models).each(function(ref){
+				var pages = ref.get("pages");
+				if (pages!="") ref.save("pages",app.convertToPages(pages));
+			});
+		},
+		convertLetters: function(){
+			app.pagesOn = false;
+			_(app.topics.models).each(function(ref){
+				var pages = ref.get("pages");
+				if (pages!="") ref.save("pages",app.convertToLetters(pages));
+			});
+			_(app.companies.models).each(function(ref){
+				var pages = ref.get("pages");
+				if (pages!="") ref.save("pages",app.convertToLetters(pages));
+			});
+			_(app.people.models).each(function(ref){
+				var pages = ref.get("pages");
+				if (pages!="") ref.save("pages",app.convertToLetters(pages));
+			});
 		}
 	});
 
@@ -111,7 +153,7 @@ var app = app || {};
 		template: _.template($rowTemp.html()),
 		events: {
 			"click"				: "select",
-			"submit #add-new"	: "addNew"
+			"submit #add-new"	: "addNew",
 		},
 		initialize: function(){
 			this.model.on("change", this.render, this);
@@ -128,16 +170,14 @@ var app = app || {};
 			app.indexView.edit(this.model);
 		},
 		addNew: function(){
-			var pages	= this.model.get("pages"),
-				newPgs 	= this.$(".add-pgs").val(),
-				newsep	= (pages=="") ? "" : ",",
-				conc	= pages + newsep + newPgs,
-				arr		= conc.split(",");
-			for (i in arr) arr[i] = parseFloat(arr[i]);
-			arr.sort(function(a,b){return a-b});
-			pages = (isNaN(arr[0])) ? "" : arr.join(sep);
-			
-			this.model.save("pages",pages);
+			var pgs;
+			if (app.table!="letters"){
+				var pages	= this.model.get("pages"),
+					newPgs 	= this.$(".add-pgs").val(),
+					pgs		= (app.pagesOn) ? app.updatePages(pages,newPgs) : app.formatPages(pages,newPgs);
+			}
+			else pgs = this.$(".add-pgs").val();
+			this.model.save("pages",pgs);
 			return false;
 		},
 		remove: function(){

@@ -2,7 +2,7 @@
 
 <div class="row-fluid sticky">
  	
-	<div class="span5" id="editReference">
+	<div class="span6" id="editReference">
 		<h3>Edit Reference</h3>
 		<form id="edit">
 		<p>
@@ -16,7 +16,7 @@
 		</p>
 		<p class="pull-left">
 			<label>Pages:</label>
-			<input type="text" id="pages" />
+			<input type="text" id="pages" class="input-xlarge" />
 		</p>
 		<p class="pull-left">
 			<input type="submit" class="btn btn-primary update" value="Update"/>
@@ -26,19 +26,21 @@
 		</form>
 	</div>
 	
-	<div class="span4" id="pageNums">
+	<div class="span5" id="pageNums">
 		<h3>Adjust page numbers</h3>
 		<form id="adjust" action="/adjust" method="post">
-		<p class="pull-left">
+		<p><div class="pull-left">
 			<label>Input page:</label>
 			<input type="text" name="input_page" />
-		</p>
+		</div></p>
 		<p class="pull-left">
 			<label># of pages:</label>
 			<input type="text" name="input_pages" />
 		</p>
 		<p class="pull-left">
-			<input class="btn" type="submit" value="Change"/>
+			<input class="btn btn-primary" type="submit" value="Change"/>
+			<input class="btn btn-warning" type="button" value="Convert to Pages" id="convertP"/>
+			<input class="btn btn-warning" type="button" value="Convert to Letters" id="convertL"/>
 		</p>
 		</form>
 	</div>
