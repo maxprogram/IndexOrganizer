@@ -96,7 +96,7 @@ var app = app || {};
 		update: function(){
 			var self	= this,
 				pages 	= this.$edPages.val(),
-				pgs		= app.formatPages(pages,"");
+				pgs		= (app.pagesOn) ? app.updatePages(pages,"") : app.formatPages(pages,"");
 			
 			this.selected.save({
 				name: self.$edName.val(),
