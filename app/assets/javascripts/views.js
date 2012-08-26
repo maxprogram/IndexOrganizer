@@ -20,7 +20,7 @@ var app = app || {};
 		
 		app.entries = app.topics;
 		app.table = "topics";
-		app.pagesOn = false;
+		app.pagesOn = true;
 		app.indexView = new IndexView();
 		app.adjustPage = new AdjustPage();
 		$("#test").click(function(){console.log(convertToLetters("19, 20, 21, 24, 36, 39, 41, 67, 68, 74, 75"))});
