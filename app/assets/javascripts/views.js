@@ -1,9 +1,4 @@
 
-_.templateSettings = {
-    interpolate: /\{\{(.+?)\}\}/g,
-    evaluate: /\{%(.+?)%\}/g	
-};
-
 var app = app || {};
 
 (function($){
@@ -12,6 +7,7 @@ var app = app || {};
 		$nav		= $("#listNav"),
 		$edit		= $("#editReference"),
 		$adjust		= $("#pageNums"),
+		$find		= $("#findAdd"),
 		$index		= $("#index");
 	
 	// Load functions
@@ -25,6 +21,7 @@ var app = app || {};
 		// Create view instances
 		app.indexView = new IndexView();
 		app.adjustPage = new AdjustPage();
+		app.findView = new FindView();
 		
 		// Set fixed heading spacing
 		$(".moving").css("marginTop",$(".sticky").height());
@@ -56,11 +53,10 @@ var app = app || {};
 		},
 		initialize: function(){
 			_.bindAll(this,"add","edit","update","remove");
-			this.$edName 	= $("#name",this.el),
-			this.$edPages	= $("#pages",this.el),
-			this.$edLevel	= $("#level",this.el),
+			this.$edName 	= $("#name",this.el);
+			this.$edPages	= $("#pages",this.el);
+			this.$edLevel	= $("#level",this.el);
 			
-			app.entries.off();
 			app.entries.on("add", this.addRecent, this);
 			app.entries.on("add change reset", this.render, this);
 		},
@@ -151,6 +147,66 @@ var app = app || {};
 				var pages = ref.get("pages");
 				if (pages!="") ref.save("pages",app.convertToPages(pages));
 			});
+		}
+	});
+	
+	// Find/add view
+	var FindView = Backbone.View.extend({
+		el: $find,
+		nameArray: [],
+		events: {
+			"change #searchRefs": "select",
+			"submit #find"	: "update"
+		},
+		initialize: function(){
+			_.bindAll(this,"update","select");
+			this.$edName 	= $("#searchRefs",this.el);
+			this.$edPages	= $("#addnew",this.el);
+			
+			var self = this;
+			this.$edName.typeahead({
+				source: function(){return self.nameArray}
+			});
+			
+			app.topics.on("add reset change:name", this.updateArray, this);
+			app.people.on("add reset change:name", this.updateArray, this);
+			app.companies.on("add reset change:name", this.updateArray, this);
+		},
+		updateArray: function(){
+			var topics 		= app.topics.getNames(),
+				people		= app.people.getNames(),
+				companies	= app.companies.getNames();
+			
+			this.nameArray = topics.concat(people,companies);
+		},
+		select: function(){
+			var name	= this.$edName.val(),
+				topic	= app.topics.findByName(name),
+				person	= app.people.findByName(name),
+				company	= app.companies.findByName(name);
+			
+			if (name=="") return;
+			if (topic==undefined && person==undefined && company==undefined)
+				console.log("Reference not found.");
+			else if (topic==undefined && person==undefined)
+				this.selected = company;
+			else if (topic==undefined && company==undefined)
+				this.selected = person;
+			else if (person==undefined && company==undefined)
+				this.selected = topic;	
+			else alert("Error");
+			console.log(this.selected);	
+		},
+		update: function(){
+			var self	= this,
+				pages	= this.selected.get("pages"),
+				newPgs 	= this.$edPages.val(),
+				pgs		= (app.pagesOn) ? app.updatePages(pages,newPgs) : app.formatPages(pages,newPgs);
+			
+			this.selected.save({ pages: pgs });
+			this.$edName.val("");
+			this.$edPages.val("");
+			return false;
 		}
 	});
 

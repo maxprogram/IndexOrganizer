@@ -40,6 +40,14 @@ var app = app || {};
 				return parseFloat(ref.get("name")) == parseFloat(name);
 			});
 			return parseFloat(model.get("pages"));
+		},
+		getNames: function(){
+			return this.pluck("name")
+		},
+		findByName: function(name){
+			return this.find(function(ref){
+				return ref.get("name") == name;
+			})
 		}
 	});
 	
