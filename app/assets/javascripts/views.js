@@ -12,8 +12,7 @@ var app = app || {};
 		$nav		= $("#listNav"),
 		$edit		= $("#editReference"),
 		$adjust		= $("#pageNums"),
-		$index		= $("#index"),
-		$rowTemp	= $("#row-Template");
+		$index		= $("#index");
 	
 	// Load functions
 	$(function(){
@@ -159,7 +158,7 @@ var app = app || {};
 	var RowView = Backbone.View.extend({
 		tagName: "tr",
 		className: "index-row",
-		template: _.template($rowTemp.html()),
+		template: JST['reference'],
 		events: {
 			"click"				: "select",
 			"submit #add-new"	: "addNew",
