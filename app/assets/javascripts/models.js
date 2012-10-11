@@ -53,7 +53,14 @@ var app = app || {};
 	
 	// Extends collection to all rails models
 	Topics = Collection.extend({url: "/topics"});
-	People = Collection.extend({url: "/people"});
+	People = Collection.extend({
+		url: "/people",
+		comparator: function(m){
+			var name = m.get("name"),
+				names = name.split(" ");
+			return names[1];
+		}
+	});
 	Companies = Collection.extend({url: "/companies"});
 	Letters = Collection.extend({url: "/letters"});
 
