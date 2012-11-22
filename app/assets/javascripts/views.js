@@ -2,30 +2,30 @@
 var app = app || {};
 
 (function($){
-	
+
 	var	sep			= ", ",
 		$nav		= $("#listNav"),
 		$edit		= $("#editReference"),
 		$adjust		= $("#pageNums"),
 		$find		= $("#findAdd"),
 		$index		= $("#index");
-	
+
 	// Load functions
 	$(function(){
-		
+
 		// App "start" variables
 		app.entries = app.topics;
 		app.table = "topics";
 		app.pagesOn = true;
-		
+
 		// Create view instances
 		app.indexView = new IndexView();
 		app.adjustPage = new AdjustPage();
 		app.findView = new FindView();
-		
+
 		// Set fixed heading spacing
 		$(".moving").css("marginTop",$(".sticky").height());
-		
+
 		// Table tab toggling
 		$("li a",$nav).click(function(){
 			$(this).parent()
@@ -38,9 +38,10 @@ var app = app || {};
 			app.entries = app[newCollect];
 			app.entries.fetch();
 			app.indexView.initialize();
+			$("#csvLink").attr("href","/csv?t="+newCollect);
 			return false;
 		});
-		
+
 	});
 
 	// Index view
@@ -56,14 +57,14 @@ var app = app || {};
 			this.$edName 	= $("#name",this.el);
 			this.$edPages	= $("#pages",this.el);
 			this.$edLevel	= $("#level",this.el);
-			
+
 			app.entries.on("add", this.addRecent, this);
 			app.entries.on("add change reset", this.render, this);
 		},
 		render: function(){
 			var self = this, selected = false;
 			$(".index-row",$index).remove();
-			
+
 			_(app.entries.models).each(function(ref,i){
 				var rowView = new RowView({model: ref});
 				$index.append(rowView.render().el);
@@ -75,7 +76,7 @@ var app = app || {};
 					rowView.select();
 					selected = true;
 				}
-			});	
+			});
 		},
 		add: function(){
 			app.entries.create();
@@ -96,7 +97,7 @@ var app = app || {};
 			var self	= this,
 				pages 	= this.$edPages.val(),
 				pgs		= (app.pagesOn) ? app.updatePages(pages,"") : app.formatPages(pages,"");
-			
+
 			this.selected.save({
 				name: self.$edName.val(),
 				pages: pgs,
@@ -149,7 +150,7 @@ var app = app || {};
 			});
 		}
 	});
-	
+
 	// Find/add view
 	var FindView = Backbone.View.extend({
 		el: $find,
@@ -162,12 +163,12 @@ var app = app || {};
 			_.bindAll(this,"update","select");
 			this.$edName 	= $("#searchRefs",this.el);
 			this.$edPages	= $("#addnew",this.el);
-			
+
 			var self = this;
 			this.$edName.typeahead({
 				source: function(){return self.nameArray}
 			});
-			
+
 			app.topics.on("add reset change:name", this.updateArray, this);
 			app.people.on("add reset change:name", this.updateArray, this);
 			app.companies.on("add reset change:name", this.updateArray, this);
@@ -176,7 +177,7 @@ var app = app || {};
 			var topics 		= app.topics.getNames(),
 				people		= app.people.getNames(),
 				companies	= app.companies.getNames();
-			
+
 			this.nameArray = topics.concat(people,companies);
 		},
 		select: function(){
@@ -184,7 +185,7 @@ var app = app || {};
 				topic	= app.topics.findByName(name),
 				person	= app.people.findByName(name),
 				company	= app.companies.findByName(name);
-			
+
 			if (name=="") return;
 			if (topic==undefined && person==undefined && company==undefined)
 				console.log("Reference not found.");
@@ -193,16 +194,16 @@ var app = app || {};
 			else if (topic==undefined && company==undefined)
 				this.selected = person;
 			else if (person==undefined && company==undefined)
-				this.selected = topic;	
+				this.selected = topic;
 			else alert("Error");
-			console.log(this.selected);	
+			console.log(this.selected);
 		},
 		update: function(){
 			var self	= this,
 				pages	= this.selected.get("pages"),
 				newPgs 	= this.$edPages.val(),
 				pgs		= (app.pagesOn) ? app.updatePages(pages,newPgs) : app.formatPages(pages,newPgs);
-			
+
 			this.selected.save({ pages: pgs });
 			this.$edName.val("");
 			this.$edPages.val("");
@@ -224,13 +225,13 @@ var app = app || {};
 			this.model.on("destroy", this.unrender, this);
 		},
 		render: function(){
-			this.$el.html(this.template(this.model.toJSON()));	
+			this.$el.html(this.template(this.model.toJSON()));
 			return this;
 		},
 		select: function(){
 			$(this.el).parent().children().removeClass("active");
 			$(this.el).addClass("active");
-			
+
 			app.indexView.edit(this.model);
 		},
 		addNew: function(){
@@ -253,5 +254,5 @@ var app = app || {};
 	});
 
 
-	
+
 })(jQuery);

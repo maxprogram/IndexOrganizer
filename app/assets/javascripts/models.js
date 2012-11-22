@@ -22,7 +22,7 @@ var app = app || {};
 			pages: ""
 		}
 	});
-	
+
 	Collection = Backbone.Collection.extend({
 		model: Reference,
 		comparator: function(t){
@@ -50,7 +50,7 @@ var app = app || {};
 			})
 		}
 	});
-	
+
 	// Extends collection to all rails models
 	Topics = Collection.extend({url: "/topics"});
 	People = Collection.extend({
@@ -61,12 +61,17 @@ var app = app || {};
 			return names[1];
 		}
 	});
-	Companies = Collection.extend({url: "/companies"});
+	Companies = Collection.extend({
+		url: "/companies",
+		comparator: function(m){
+			return t.get("name");
+		}
+	});
 	Letters = Collection.extend({url: "/letters"});
 
 	app.topics = new Topics();
 	app.people = new People();
 	app.companies = new Companies();
 	app.letters = new Letters();
-	
+
 })(jQuery);

@@ -3,7 +3,8 @@ RailsFramework::Application.routes.draw do
   root to: 'home#index'
 
   match '/about', to: 'home#about'
-  match '/letters-array', to: 'home#letters'
+  match '/letters-hash', to: 'home#letters'
+  match '/csv', to: 'home#csv'
   resources :topics
   resources :people
   resources :companies
