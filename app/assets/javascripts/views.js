@@ -174,7 +174,7 @@ var app = app || {};
 			app.companies.on("add reset change:name", this.updateArray, this);
 		},
 		updateArray: function(){
-			var topics 		= app.topics.getNames(),
+			var topics		= app.topics.getNames(),
 				people		= app.people.getNames(),
 				companies	= app.companies.getNames();
 
@@ -186,7 +186,7 @@ var app = app || {};
 				person	= app.people.findByName(name),
 				company	= app.companies.findByName(name);
 
-			if (name=="") return;
+			if (name === "") return;
 			if (topic==undefined && person==undefined && company==undefined)
 				console.log("Reference not found.");
 			else if (topic==undefined && person==undefined)
